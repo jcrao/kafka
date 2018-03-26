@@ -1,0 +1,47 @@
+flow_meter_service_name: FlowMeterService
+
+ribbon:
+    IsSecure: true
+    ConnectTimeout: 3000
+    ReadTimeout: 300000
+    OkToRetryOnAllOperations: true
+    MaxAutoRetriesNextServer: 2
+    MaxAutoRetries: 2
+spring:
+  application:
+    name: DemoApplication
+  thymeleaf:
+    cache: false
+    
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://192.168.0.127:8761/eureka/
+  instance:
+    leaseRenewalIntervalInSeconds: 10
+    securePortEnabled: true
+    nonSecurePortEnabled: false
+    securePort: ${server.port}
+    statusPageUrl: https://${eureka.instance.hostName}:${eureka.instance.securePort}/info
+    healthCheckUrl: https://${eureka.instance.hostName}:${eureka.instance.securePort}/health
+    homePageUrl: https://${eureka.instance.hostName}:${eureka.instance.securePort}/
+    metadataMap:
+      instanceId: ${vcap.application.instance_id:${spring.application.name}:${spring.application.instance_id:${server.port}}}
+      securePort: ${eureka.instance.securePort}
+
+server:
+  session:
+    cookie:
+      name: UISESSION
+security:
+  basic:
+    enabled: false
+  oauth2:
+    client:
+      clientId: SampleClientId
+      clientSecret: secret
+      accessTokenUri: http://192.168.0.31:8081/auth/oauth/token
+      userAuthorizationUri: http://192.168.0.31:8081/auth/oauth/authorize
+    resource:
+      userInfoUri: http://192.168.0.31:8081/auth/user/me
+ 
